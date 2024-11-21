@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
     }
+    
     fclose(tracer_file);
 
     printf("Packets received at node %s: %d\n", argv[2], packets_received);
