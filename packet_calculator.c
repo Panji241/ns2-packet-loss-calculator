@@ -2,16 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define NODE "3"
-
 int main(int argc, char *argv[]) {
     char buffer[256] = {0}, trace_info[12][16] = {0}, *token;
     int packets_received = 0, packets_dropped = 0;
 
-    printf("Tracer file: %s\n", argv[0]);
-
-    if(argc != 2) {
-        printf("Usage: ./packet_calculator <Tracer File>\n");
+    if(argc != 3) {
+        printf("Usage: ./packet_calculator <Tracer File> <Node Number>\n");
         return -1;
     }
 
@@ -28,11 +24,11 @@ int main(int argc, char *argv[]) {
                 i++;
             }
 
-            if((strcmp(trace_info[3], NODE) == 0) && (strcmp(trace_info[0], "r") == 0)) {
+            if((strcmp(trace_info[3], argv[2]) == 0) && (strcmp(trace_info[0], "r") == 0)) {
                 packets_received++;
             }
 
-            if((strcmp(trace_info[3], NODE) == 0) && (strcmp(trace_info[0], "d") == 0)) {
+            if((strcmp(trace_info[3], argv[2]) == 0) && (strcmp(trace_info[0], "d") == 0)) {
                 packets_dropped++;
             }
         }
@@ -42,8 +38,8 @@ int main(int argc, char *argv[]) {
     }
     fclose(tracer_file);
 
-    printf("Packets received at node %s: %d\n", NODE, packets_received);
-    printf("Packets dropped at node %s: %d\n", NODE, packets_dropped);
+    printf("Packets received at node %s: %d\n", argv[2], packets_received);
+    printf("Packets dropped at node %s: %d\n", argv[2], packets_dropped);
     printf("Packet loss rate: %.2f%%\n", (float)packets_dropped / packets_received * 100);
 
     return 0;
