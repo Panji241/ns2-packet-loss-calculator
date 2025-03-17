@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-    char buffer[256] = {0}, trace_info[12][16] = {0}, *token;
+    char buffer[128] = {0}, trace_info[12][16] = {0}, *token, *file_extension;
     int packets_received = 0, packets_dropped = 0;
 
     if(argc != 3) {
@@ -12,7 +12,14 @@ int main(int argc, char *argv[]) {
     }
 
     FILE *tracer_file = fopen(argv[1], "r");
-    if(tracer_file == NULL) return -1;
+    file_extension = strchr(argv[1], '.');
+
+    if((tracer_file == NULL) || (strcmp(file_extension, ".tr") != 0)) {
+        printf("Error: Unable to open file %s, make sure its a supported file type and it exists within the executable program folder.\n", argv[1]);
+        return -1;
+    }
+
+
     
     while(fgets(buffer, sizeof(buffer), tracer_file) != NULL) {
         token = strtok(buffer, " ");
