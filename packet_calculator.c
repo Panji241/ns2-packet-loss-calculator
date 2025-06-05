@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    fclose(script_file);
+
     FILE *tracer_file = fopen(argv[1], "r");
     tracer_extension = strchr(argv[1], '.');
 
@@ -42,8 +44,8 @@ int main(int argc, char *argv[]) {
         token = strtok(buffer, " ");
         if((strcmp(token, "r") == 0) || (strcmp(token, "d") == 0)) {
             int i = 0;
-            while((token != NULL) || (i < 12)) {
-                strcpy(trace_info[i], token);
+            while((token != NULL) && (i < 12)) {
+                strncpy(trace_info[i], token, 16);
                 token = strtok(NULL, " ");
                 i++;
             }
